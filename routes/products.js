@@ -21,11 +21,11 @@ router.route("/:product_id").get((req, res) => {
 });
 
 router.route("/:product_id/styles").get((req, res) => {
-  res.send("list of styles for product #" + req.params.product_id);
+  controller.getStyles(req, res);
 });
 
 router.route("/:product_id/related").get((req, res) => {
-  res.send("list of related for product #" + req.params.product_id);
+  controller.getRelated(req, res);
 });
 
 module.exports = router;

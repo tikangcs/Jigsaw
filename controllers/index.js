@@ -26,9 +26,33 @@ const getProductInfo = (req, res) => {
   }
 };
 
+const getStyles = (req, res) => {
+  const product_id = Number(req.params.product_id);
+  models.getStyles(product_id, (err, payload) => {
+    if (err) {
+      console.error(`Error occurred while retrieving styles: ${err}`);
+      res.status(500).send(`Error while getting style: ${err}`);
+    } else {
+      res.status(200).send(payload);
+    }
+  });
+};
+
+const getRelated = (req, res) => {
+  const product_id = Number(req.params.product_id);
+  models.getRelated(product_id, (err, payload) => {
+    if (err) {
+      console.error(`Error: ${err}`);
+      res.status(500).send(`Error: ${err}`);
+    } else {
+      res.status(200).send(payload);
+    }
+  });
+};
+
 module.exports = {
   getProducts,
   getProductInfo,
-  // getStyles,
-  // getRelated,
+  getStyles,
+  getRelated,
 };
