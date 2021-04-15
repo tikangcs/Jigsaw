@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const controller = require("../controllers/index.js");
 
 router.route("/").get((req, res) => {
   // let {page, count} = req.query;
@@ -12,11 +13,11 @@ router.route("/").get((req, res) => {
   //   res.status(200).send('no products matched your search')
   // res.status(200).json({success:true, data:[]})
   // }
-  res.send("list of products");
+  controller.getProducts(req, res);
 });
 
 router.route("/:product_id").get((req, res) => {
-  res.send("product info for product #" + req.params.product_id);
+  controller.getProductInfo(req, res);
 });
 
 router.route("/:product_id/styles").get((req, res) => {

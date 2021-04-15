@@ -3,12 +3,12 @@
 In Project Jigsaw, we will be refactoring the backend that serves our mock fashion ecommerce front end client.
 The objectives of this project will be as follows:
 
-- Containerize and compose the backend stacks into a single unit using Docker
+- Containerize and compose the backend stacks into a single unit in Docker
 - Deploy the containers to the cloud using an AWS EC2 instance
-- Perform the ETL process over a sizable dataset involving millions of records
+- Perform the ETL process over a sizable dataset involving over 10 millions records
 - Design an efficient RESTful API server to handle requests gracefully
 - Performance test the backend for latency acheived at various throughput levels
-- Implement a load balancer using Nginx
+- Implement a reverse proxy/load balancer using Nginx
 - Implement serverside caching using Redis
 
 # NODE
@@ -16,7 +16,7 @@ The objectives of this project will be as follows:
 - npm init
 - npm install dependencies
   - express
-- Create a server in MVC architecture and route requests to one of three endpoints
+- Create a server in MVC architecture and route requests to the following endpoints:
   - /Products
   - /Styles
   - /Related
