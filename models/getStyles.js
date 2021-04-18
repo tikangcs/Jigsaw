@@ -1,4 +1,4 @@
-const db = require("../db/mysql.js");
+const db = require("../db/index.js");
 
 module.exports = (product_id, callback) => {
   if (product_id) {

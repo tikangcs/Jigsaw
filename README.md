@@ -28,6 +28,15 @@ The objectives of this project will be as follows:
   - Foreign Key of Product ID
 - Related
   - Foreign Key of Product ID
+- Index
+
+# MYSQL
+
+- Run the docker container
+- Design Schema for the 3 tables
+- Create the products, styles, and related tables
+- Import the data for each table
+- Design SQL queries for each API endpoint
 
 # DOCKER
 
@@ -49,14 +58,8 @@ The objectives of this project will be as follows:
   - Nginx
 - Install PM2
 
-# MYSQL
-
-- Run the docker container
-- Design Schema for the 3 tables
-- Create the products, styles, and related tables
-- Import the data for each table
-- Design SQL queries for each API endpoint
-
 # NGINX
 
 # REDIS
+
+# StatsD, Grafana, Loader.io

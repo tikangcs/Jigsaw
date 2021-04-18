@@ -1,4 +1,4 @@
-const db = require("../db/mysql.js");
+const db = require("../db/index.js");
 require("dotenv").config();
 
 module.exports = (callback) => {
