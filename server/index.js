@@ -1,4 +1,5 @@
 const app = require("express")();
+const redis = require("redis");
 const path = require("path");
 const parser = require("body-parser");
 const productsRouter = require("../routes/products.js");
@@ -6,6 +7,10 @@ const logger = require("./logger.js");
 const authorize = require("./authorize.js");
 require("dotenv").config();
 
+const client = redis.createClient({
+  host: "redis-server",
+  port: 6379,
+});
 const port = process.env.port || 3000;
 const host = "0.0.0.0";
 
