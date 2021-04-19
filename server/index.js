@@ -7,6 +7,7 @@ const authorize = require("./authorize.js");
 require("dotenv").config();
 
 const port = process.env.port || 3000;
+const host = "0.0.0.0";
 
 app.use([logger]);
 app.use(parser.json());
@@ -22,7 +23,7 @@ app.all("*", (req, res) => {
   res.status(404).send("resource not found");
 });
 
-app.listen(port, (err) => {
+app.listen(port, host, (err) => {
   if (err) {
     console.error(err);
   } else {

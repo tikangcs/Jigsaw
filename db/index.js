@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect((err) => {
-  if (err) throw err;
+  if (err) console.log(err);
   console.log(`Connected to MySQL as thread id: ${connection.threadId}`);
 });
 
