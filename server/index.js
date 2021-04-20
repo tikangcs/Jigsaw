@@ -8,7 +8,7 @@ const authorize = require("./authorize.js");
 require("dotenv").config();
 
 const client = redis.createClient({
-  host: "redis-server",
+  host: "redis-server" || "localhost",
   port: 6379,
 });
 const port = process.env.port || 3000;

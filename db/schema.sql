@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS products (
   category varchar(100),
   default_price integer);
 
-LOAD DATA LOCAL INFILE '~/Desktop/SDC_DATA/product.csv'
+LOAD DATA LOCAL INFILE '/var/lib/mysql/product-10000.csv'
 INTO TABLE products
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -27,7 +27,7 @@ CREATE TABLE styles (
   original_price integer,
   default_style integer);
 
-LOAD DATA LOCAL INFILE '~/Desktop/SDC_DATA/styles.csv'
+LOAD DATA LOCAL INFILE '/var/lib/mysql/styles-10000.csv'
 INTO TABLE styles
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -41,7 +41,7 @@ CREATE TABLE related (
   currentprodid integer,
   relatedprodid integer);
 
-LOAD DATA LOCAL INFILE '~/Desktop/SDC_DATA/related.csv'
+LOAD DATA LOCAL INFILE '/var/lib/mysql/related-10000.csv'
 INTO TABLE related
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
