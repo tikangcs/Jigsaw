@@ -1,11 +1,27 @@
-version: "3"
+version: "3.8"
+
 services:
   redis-server:
     image: "redis"
   mysql-db:
-    image: "mysql"
-  node-app:
-    restart: "always"
-    build: .
+    image: mysql
+    restart: always
+    env_file: ./.env
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
     ports:
-      - "4001:4000"
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    volumes:
+      - db-data:/var/lib/mysql
+  node-app:
+    build: .
+    restart: always
+    ports:
+      - $port:$port
+    depends_on:
+      - mysql-db
+
+volumes:
+  db-data:
