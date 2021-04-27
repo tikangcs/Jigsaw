@@ -5,7 +5,7 @@ var pool = mysql.createPool({
   host: process.env.MYSQL_HOST || "0.0.0.0",
   user: "root",
   password: process.env.MYSQL_PASSWORD || "",
-  database: process.env.MYSQL_DATABASE || "jigsaw",
+  database: process.env.MYSQL_DATABASE || "JIGSAW",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,

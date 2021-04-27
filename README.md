@@ -8,7 +8,7 @@ The objectives of this project will be as follows:
 - Perform the ETL process over a sizable dataset involving over 10 millions records
 - Design an efficient RESTful API server to handle requests gracefully
 - Performance test the backend for latency acheived at various throughput levels
-- Implement a reverse proxy/load balancer using Nginx
+- Implement a reverse proxy/load balancer (Nginx)
 - Implement serverside caching using Redis
 
 # NODE
@@ -40,11 +40,10 @@ The objectives of this project will be as follows:
 
 # DOCKER
 
-## DockerFile
-
-## Docker Compose
-
-- Determine the composition of the containers
+- Create a Dockerfile to customize the node image
+- Utilize docker-compose to package the server and database services
+- Mount a volume to store the db data
+- Load data into the volume
 
 # AWS EC2
 
@@ -56,7 +55,7 @@ The objectives of this project will be as follows:
   - Node
   - Redis
   - Nginx
-- Install PM2
+- Install PM2 to the node image
 
 # NGINX
 
