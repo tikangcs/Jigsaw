@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
   res.status(200).send("connected to the server");
 });
 
+app.get(`/${process.env.LOADER}`, (req, res) => {
+  res.status(200).send("loader host server verification");
+});
+
 app.all("*", (req, res) => {
   res.status(404).send("resource not found");
 });
