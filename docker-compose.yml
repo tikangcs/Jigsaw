@@ -1,8 +1,6 @@
 version: "3.8"
 
 services:
-  redis-server:
-    image: "redis"
   mysql-db:
     image: mysql
     restart: always
@@ -20,9 +18,13 @@ services:
     build: .
     restart: always
     ports:
-      - $port:$port
+      - $NODE_PORT:$NODE_PORT
     depends_on:
       - mysql-db
+  redis-server:
+    image: "redis"
+    ports:
+      - $REDIS_PORT:$REDIS_PORT
 
 volumes:
   db-data:

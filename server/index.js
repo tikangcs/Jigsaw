@@ -11,7 +11,7 @@ const client = redis.createClient({
   host: "redis-server" || "localhost",
   port: 6379,
 });
-const port = process.env.port || 3000;
+const port = process.env.NODE_PORT || 3000;
 const host = "0.0.0.0";
 
 app.use([logger]);
