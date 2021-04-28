@@ -40,3 +40,10 @@ CREATE TABLE related (
 -- FIELDS TERMINATED BY ','
 -- LINES TERMINATED BY '\n'
 -- IGNORE 1 ROWS;
+
+-- LOAD DATA LOCAL INFILE '/docker-entrypoint-initdb.d/product.csv'
+-- INTO TABLE products
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS;

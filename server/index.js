@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.get(`/${process.env.LOADER}`, (req, res) => {
-  res.status(200).send("loader host server verification");
+  res.status(200).send(process.env.LOADER);
 });
 
 app.all("*", (req, res) => {
