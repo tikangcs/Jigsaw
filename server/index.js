@@ -6,15 +6,6 @@ const logger = require("./logger.js");
 const authorize = require("./authorize.js");
 require("dotenv").config();
 
-const client = redis.createClient({
-  host: "redis-server" || "localhost",
-  port: 6379,
-});
-
-client.on("error", (error) => {
-  console.error(error);
-});
-
 const port = process.env.NODE_PORT || 3000;
 const host = "0.0.0.0";
 
