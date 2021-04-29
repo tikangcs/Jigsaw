@@ -12,4 +12,4 @@ EXPOSE 4000
 EXPOSE 3306
 EXPOSE 80
 
-CMD ["node", "./server/index.js"]
+CMD ["pm2", "start", "./server/index.js"]
