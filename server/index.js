@@ -1,5 +1,4 @@
 const app = require("express")();
-const redis = require("redis");
 const path = require("path");
 const parser = require("body-parser");
 const productsRouter = require("../routes/products.js");
@@ -11,6 +10,11 @@ const client = redis.createClient({
   host: "redis-server" || "localhost",
   port: 6379,
 });
+
+client.on("error", (error) => {
+  console.error(error);
+});
+
 const port = process.env.NODE_PORT || 3000;
 const host = "0.0.0.0";
 
@@ -21,7 +25,7 @@ app.use("/products", productsRouter);
 // app.use(express.static('../public'))
 
 app.get("/", (req, res) => {
-  res.status(200).send("connected to the server");
+  res.status(200).send("Connected to the Jigsaw server!");
 });
 
 app.get(`/${process.env.LOADER}`, (req, res) => {
