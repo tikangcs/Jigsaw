@@ -36,6 +36,6 @@ app.listen(port, host, (err) => {
   if (err) {
     console.error(err);
   } else {
-    console.log(`Listening to server at http://localhost:${port}`);
+    console.log(`Listening to server at http://${host}:${port}`);
   }
 });
