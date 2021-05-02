@@ -25,6 +25,11 @@ services:
     image: "redis"
     ports:
       - $REDIS_PORT:$REDIS_PORT
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - $NGINX_PORT:$NGINX_PORT
 
 volumes:
   db-data:
