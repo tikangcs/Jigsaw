@@ -8,12 +8,12 @@ module.exports = (id, callback) => {
       console.error(`error getting product ${id} from cache: ${err}`);
     }
     if (payload) {
-      res.status(200).send(payload);
+      callback(err, payload);
     } else {
       db.query(
         `SELECT * FROM products WHERE PRODID = ${id}`,
         (err, payload) => {
-          client.setex(id, 240, payload);
+          client.setex(id, 240, JSON.stringify(payload));
           callback(err, payload);
         }
       );
