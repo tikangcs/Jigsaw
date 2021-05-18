@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:alpine
 
 WORKDIR /usr/app
 
@@ -10,7 +10,5 @@ RUN npm install pm2 -g
 COPY . .
 
 EXPOSE 4000
-EXPOSE 3306
-EXPOSE 80
 
 CMD ["pm2-dev", "./server/index.js"]
