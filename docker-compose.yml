@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   mysql-db:
     image: mysql
     restart: always
@@ -14,22 +15,32 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
-  node-app:
+
+    node-app:
     build: .
     restart: always
+    enviornment:
+      NODE_ENV: production
     ports:
       - $NODE_PORT:$NODE_PORT
     depends_on:
       - mysql-db
+
   redis-server:
     image: "redis"
+    depends_on:
+      - node-app
     ports:
       - $REDIS_PORT:$REDIS_PORT
+
   nginx:
     build:
       context: ./nginx
+    depends_on:
+      - node-app
     ports:
       - $NGINX_PORT:$NGINX_PORT
+    restart: always
 
 volumes:
   db-data:
