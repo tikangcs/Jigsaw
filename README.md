@@ -1,6 +1,8 @@
-# Introduction
+# Jigsaw
+Foundational development and deployment of microservices driven back-end architecture featuring performance testing and modern optimization techniques
 
-In Project Jigsaw, we will be refactoring the backend that serves our mock fashion ecommerce front end client.
+## Overview
+
 The objectives of this project will be as follows:
 
 - Containerize and compose the backend stacks into a single unit in Docker
@@ -11,7 +13,16 @@ The objectives of this project will be as follows:
 - Implement a reverse proxy/load balancer (Nginx)
 - Implement serverside caching using Redis
 
-# NODE
+## Technologies Featured
+- Node.js
+- MySQL
+- Docker
+- AWS EC2 
+- Redis
+- Nginx
+- Loader.io
+
+## Getting Started
 
 - npm init
 - npm install dependencies
@@ -30,7 +41,7 @@ The objectives of this project will be as follows:
   - Foreign Key of Product ID
 - Index
 
-# MYSQL
+## Key Observations and Accomplishments
 
 - Run the docker container
 - Design Schema for the 3 tables
@@ -38,14 +49,10 @@ The objectives of this project will be as follows:
 - Import the data for each table
 - Design SQL queries for each API endpoint
 
-# DOCKER
-
 - Create a Dockerfile to customize the node image
 - Utilize docker-compose to package the server and database services
 - Mount a volume to store the db data
 - Load data into the volume
-
-# AWS EC2
 
 - Create an AWS EC 2 T2.Micro instance
 - SSH into the instance
@@ -57,8 +64,3 @@ The objectives of this project will be as follows:
   - Nginx
 - Install PM2 to the node image
 
-# NGINX
-
-# REDIS
-
-# StatsD, Grafana, Loader.io
