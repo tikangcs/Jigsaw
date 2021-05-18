@@ -15,15 +15,33 @@ services:
       - db-data:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
 
-  node-app:
+  node-app-1:
     build: .
     restart: always
     environment:
       NODE_ENV: production
     ports:
       - $NODE_PORT:$NODE_PORT
-      - 4001: 4001
-      - 4002: 4002
+    depends_on:
+      - mysql-db
+
+  node-app-2:
+    build: .
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - $NODE_PORT:$NODE_PORT
+    depends_on:
+      - mysql-db
+
+  node-app-3:
+    build: .
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - $NODE_PORT:$NODE_PORT
     depends_on:
       - mysql-db
 
