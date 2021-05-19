@@ -1,5 +1,5 @@
 # Jigsaw
-Foundational development and deployment of microservices driven back-end architecture featuring performance testing and modern optimization techniques
+Foundational development and deployment of services oriented back-end architecture featuring performance testing and modern optimization techniques
 
 ## Overview
 
