@@ -37,11 +37,14 @@ This was all deployed to the cloud using only AWS EC2 t2.micro instances.
 ## Architecture
 ### Containerized Single Server Set Up
 - Containerized MySQL, Nginx, Node and Redis into a single Docker unit and deployed to a single AWS EC2 t2.micro instance
+[Image of single server setup architecture]
 
 ### Distributed Systems Set Up
 - 5 separate AWS EC2 t2.micro instances (1 MySQL, 1 Nginx, 3 Node.js)
 - Reverse Proxy 
 - Load balancing (round robin vs least connections)
+
+[Image of distributed systems setup architecture]
 
 ## Load Testing using Loader.io
 - Only read queries were performed
@@ -51,6 +54,15 @@ This was all deployed to the cloud using only AWS EC2 t2.micro instances.
 - Acceptable performance thresholds - latency of 50ms and 95% response rates/sub 5% error rates
 - Each round of tests consisted of 3 consecutive 30 second tests using a cloud-based load testing site, Loader.io 
 ### Results and Observations
+[tables of baseline single server results]
+[table and images of redis optimizations]
+[tables of baseline reverse proxy server results]
+[tables of load balancing LC]
+[image of most optimal 1,000 req/sec results]
+[tables of load balancing RR]
+[images of erratic behavior of RR]
+
+
 - The initial goal was to serve 100 clients per second with sub-50ms average response times. However, through the optimzation techniques, the acceptable performance thresholds were met at 1,000 clients per second.
 - While the load balancing was effective, the least connection method was more consistent in producing the optimized results. The round robin method exhibited some erratic behavior. In testing rounds where no errors were encountered, the round robin method worked just as effectively as least connections. However, when errors were encountered, there were spikes in average latency times that seemed to stem from a snowballing effect correlated to the occurrence of an error. 
 - Implementing a reverse-proxy server negatively impacted the performance metrics of a single server architecture when compared to a set up without it. However, the potential performance improvements through horizontal scaling exceeded the immediate performance hit to the single server. Additional research to be performed over how to configure the reverse-proxy server to nullify some of the negative performance impacts observed.
