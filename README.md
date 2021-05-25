@@ -76,21 +76,23 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 2      |      38 ms  | 15,000 / 15,000 |   100%   | 0%
 3      |      17 ms  | 15,000 / 15,000 |   100%   | 0%
 Total Avg|    389 ms  | 15,000 / 15,000 |  100%   | 0%
+
+#### `Bottom Line` - Improved total average latency by 300% and consistently perfect response rates
 ---
 
 ### Distributed systems horizontal scaling optimization - 1,000 requests / second over 30 seconds
 ---
 ### `Baseline` - Reverse Proxy to a single API server 
-Implementing a reverse-proxy server negatively impacted the performance metrics of a single server architecture when compared to a set up without it. However, the potential performance improvements through horizontal scaling exceeded the immediate performance hit to the single server. Additional research to be performed over how to configure the reverse-proxy server to nullify some of the negative performance impacts observed.
+The performance differences between the set up with and without a reverse proxy were negilible at 500 req/s. However, the implementation of the reverse-proxy server revealed noticable negative impacts to a single server architecture at 1,000 req/s. The metrics below did not pass the service level thresholds however, this sets the stage perfectly to demonstrate the potential performance improvements through horizontal scaling. 
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   556 ms  | 22,116 / 30,000 |   74%   | 24%
-2      |   1031 ms  | 21,911 / 30,000 |   73%   | 15%
-3      |   1434 ms  | 17,818 / 30,000 |   59%   | 17%
-Total Avg|    389 ms  | 20,615 / 30,000 |  69%   | 19%
+2      |   1,031 ms  | 21,911 / 30,000 |   73%   | 15%
+3      |   1,434 ms  | 17,818 / 30,000 |   59%   | 17%
+Total Avg|    1,007 ms  | 20,615 / 30,000 |  69%   | 19%
 
 ### `Optimized #1` - Reverse Proxy to 3 API servers with least connections load balancing
-Using the least connections method, the back end was able to service a load of 1,000 req/s nearly perfectly. This technique and method proved to be the clear winner.
+Using the least connections method, the back end was able to service a load of 1,000 req/s with metrics that satisfy our thresholds. The improvements did not permeate to the 2,000 req/s level, but it is clear that employing this technique was a winning strategy. 
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   17 ms  | 29,962 / 30,000 |   100%   | 0%
@@ -107,4 +109,5 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 3      |   52 ms  | 29,818 / 30,000 |   100%   | 0%
 Total Avg|    890 ms  | 23,190 / 30,000 |  77%   | 10%
 
+#### `Bottom Line` - Improved total average latency by almost 3,500% and doubled the throughput levels, eliminating errors and near perfect response rates using the least connections load balancing method
 ---
