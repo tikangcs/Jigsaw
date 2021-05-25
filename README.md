@@ -34,27 +34,30 @@ The server layer, comprised of Node.js and Express, was designed using the MVC a
 
 This was all deployed to the cloud using only AWS EC2 t2.micro instances. 
 
-## Architecture
+## Back End Architecture
 ### Containerized Single Server Set Up
-- Containerized MySQL, Nginx, Node and Redis into a single Docker unit and deployed to a single AWS EC2 t2.micro instance
+> Containerized MySQL, Nginx, Node and Redis into a single Docker unit and deployed to a single AWS EC2 t2.micro instance
 ![Image of single server setup architecture](/documentation/SingleServer.png)
 
 ### Distributed Systems Set Up
-- 5 separate AWS EC2 t2.micro instances (1 MySQL, 1 Nginx, 3 Node.js)
-- Reverse Proxy 
-- Load balancing (round robin vs least connections)
-
+> 5 separate AWS EC2 t2.micro instances (1 MySQL, 1 Nginx, 3 Node.js)
 ![Image of distributed systems setup architecture](/documentation/Distributed.png)
 
-## Load Testing using Loader.io
-- Only read queries were performed
-- Random product IDs (Over 1 Million records)
-- For purposes of testing the effectiveness of the cache, reduced the range of endpoints to target a subpopulation of the data and set a time-based expiration 
-- Different throughput levels - 100/500/1000/2000 requests per second over 30 seconds
-- Acceptable performance thresholds - latency of 50ms and 95% response rates/sub 5% error rates
-- Each round of tests consisted of 3 consecutive 30 second tests using a cloud-based load testing site, Loader.io 
-### Results and Observations
-[tables of baseline single server results at 500 req/s over 30 seconds]
+---
+## Load Testing Details
+- A suite of load testing was performed on Loader.io, a cloud based load testing web application
+- A single GET endpoint was tested to read the data related to a random product ID in a population of over 1 million records
+- Acceptable service level thresholds - latency of 50ms and 95% response rates/sub 5% error rates
+- Load tested at different throughput levels - 100/500/1,000/2,000 requests per second over 30 seconds
+- Each round of tests consisted of 3 consecutive 30 second tests. While this is not nearly enough data to serve as a basis to draw any concrete conclusions, the limited number of tests were deemed sufficient to demonstrate and confirm the effects of well known optimization techniques. 
+- The initial goal was to serve 100 clients per second with sub-50ms average response times. However, through the optimzation techniques, the acceptable performance thresholds were met at 1,000 clients per second.
+
+## Results and Observations
+
+### Single server cache optimization - 500 requests / second over 30 seconds
+---
+#### `Baseline` - Without Redis
+While this system was able to sufficiently handle a load of 500 req/s, it failed to meet the service level thresholds at 1,000 req/s.
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |      1,094 ms  | 14,645 / 15,000 |   98%   | 0%
@@ -62,15 +65,23 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 3      |      1,213 ms  | 14,717 / 15,000 |   98%   | 0%
 Total Avg|    1,166 ms  | 14,714 / 15,000 |  98%   | 0%
 
-[table and images of redis optimizations]
+#### `Optimized` - With Redis
+For purposes of testing the effectiveness of the cache, reduced the range of endpoints to target a subpopulation of the data and set a time-based expiration.
+
+Despite showing dramatic improvements to the performance at 500 req/s throughput level, the caching method did not prove effective at the 1,000 req/s. It was determined that pushing the optimizations to this increased level would require a more effective method - load balancing. The initial attempt of load balancing was performed by distributing the load across 3 different ports within the single server instance. The data revealed that it was not an effective optimization technique. Hence, a distributed system with multiple interconnected servers was designed and tested in the next section.
+
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   1,112 ms  | 15,000 / 15,000 |   100%   | 0%
 2      |      38 ms  | 15,000 / 15,000 |   100%   | 0%
 3      |      17 ms  | 15,000 / 15,000 |   100%   | 0%
 Total Avg|    389 ms  | 15,000 / 15,000 |  100%   | 0%
+---
 
-[tables of baseline reverse proxy server results at 1,000 req/s over 30 seconds]
+### Distributed systems horizontal scaling optimization - 1,000 requests / second over 30 seconds
+---
+### `Baseline` - Reverse Proxy to a single API server 
+Implementing a reverse-proxy server negatively impacted the performance metrics of a single server architecture when compared to a set up without it. However, the potential performance improvements through horizontal scaling exceeded the immediate performance hit to the single server. Additional research to be performed over how to configure the reverse-proxy server to nullify some of the negative performance impacts observed.
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   556 ms  | 22,116 / 30,000 |   74%   | 24%
@@ -78,7 +89,8 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 3      |   1434 ms  | 17,818 / 30,000 |   59%   | 17%
 Total Avg|    389 ms  | 20,615 / 30,000 |  69%   | 19%
 
-[tables of load balancing LC]
+### `Optimized #1` - Reverse Proxy to 3 API servers with least connections load balancing
+Using the least connections method, the back end was able to service a load of 1,000 req/s nearly perfectly. This technique and method proved to be the clear winner.
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   17 ms  | 29,962 / 30,000 |   100%   | 0%
@@ -86,9 +98,8 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 3      |   17 ms  | 30,000 / 30,000 |   100%   | 0%
 Total Avg|    29 ms  | 29,984 / 30,000 |  100%   | 0%
 
-[image of most optimal 1,000 req/sec results]
-[tables of load balancing RR]
-
+### `Optimized #2` - Reverse Proxy to 3 API servers with round robin load balancing
+While the overall load balancing technique was undoubtably effective, the least connection method was more consistent in producing the optimized results. The round robin method exhibited some erratic behavior. In testing rounds where no errors were encountered, the round robin method worked just as effectively as least connections. However, when errors were encountered, there was a big spike in average latency time that may have stemmed from unhandled errors. Because round robin is a static load balancing technique, errors may snowball and compound in the way that we observed in the second test.
 Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 -------|-------------|-----------------|----------------|------------
 1      |   17 ms  | 30,000 / 30,000 |   100%   | 0%
@@ -96,11 +107,4 @@ Test # | Avg Latency | Response Counts | Response Rates | Error Rates
 3      |   52 ms  | 29,818 / 30,000 |   100%   | 0%
 Total Avg|    890 ms  | 23,190 / 30,000 |  77%   | 10%
 
-[images of erratic behavior of RR]
-
-
-- The initial goal was to serve 100 clients per second with sub-50ms average response times. However, through the optimzation techniques, the acceptable performance thresholds were met at 1,000 clients per second.
-- While the load balancing was effective, the least connection method was more consistent in producing the optimized results. The round robin method exhibited some erratic behavior. In testing rounds where no errors were encountered, the round robin method worked just as effectively as least connections. However, when errors were encountered, there were spikes in average latency times that seemed to stem from a snowballing effect correlated to the occurrence of an error. 
-- Implementing a reverse-proxy server negatively impacted the performance metrics of a single server architecture when compared to a set up without it. However, the potential performance improvements through horizontal scaling exceeded the immediate performance hit to the single server. Additional research to be performed over how to configure the reverse-proxy server to nullify some of the negative performance impacts observed.
-- Limitations of vertical scaling as restricted to free tier cloud solutions
-- Load balancing to different ports within a single instance was not an effective optimization technique
+---
