@@ -37,14 +37,14 @@ This was all deployed to the cloud using only AWS EC2 t2.micro instances.
 ## Architecture
 ### Containerized Single Server Set Up
 - Containerized MySQL, Nginx, Node and Redis into a single Docker unit and deployed to a single AWS EC2 t2.micro instance
-[Image of single server setup architecture]
+![Image of single server setup architecture](/documentation/SingleServer.png)
 
 ### Distributed Systems Set Up
 - 5 separate AWS EC2 t2.micro instances (1 MySQL, 1 Nginx, 3 Node.js)
 - Reverse Proxy 
 - Load balancing (round robin vs least connections)
 
-[Image of distributed systems setup architecture]
+![Image of distributed systems setup architecture](/documentation/Distributed.png)
 
 ## Load Testing using Loader.io
 - Only read queries were performed
@@ -54,12 +54,48 @@ This was all deployed to the cloud using only AWS EC2 t2.micro instances.
 - Acceptable performance thresholds - latency of 50ms and 95% response rates/sub 5% error rates
 - Each round of tests consisted of 3 consecutive 30 second tests using a cloud-based load testing site, Loader.io 
 ### Results and Observations
-[tables of baseline single server results]
+[tables of baseline single server results at 500 req/s over 30 seconds]
+Test # | Avg Latency | Response Counts | Response Rates | Error Rates
+-------|-------------|-----------------|----------------|------------
+1      |      1,094 ms  | 14,645 / 15,000 |   98%   | 0%
+2      |      1,190 ms  | 14,781 / 15,000 |   99%   | 0%
+3      |      1,213 ms  | 14,717 / 15,000 |   98%   | 0%
+Total Avg|    1,166 ms  | 14,714 / 15,000 |  98%   | 0%
+
 [table and images of redis optimizations]
-[tables of baseline reverse proxy server results]
+Test # | Avg Latency | Response Counts | Response Rates | Error Rates
+-------|-------------|-----------------|----------------|------------
+1      |   1,112 ms  | 15,000 / 15,000 |   100%   | 0%
+2      |      38 ms  | 15,000 / 15,000 |   100%   | 0%
+3      |      17 ms  | 15,000 / 15,000 |   100%   | 0%
+Total Avg|    389 ms  | 15,000 / 15,000 |  100%   | 0%
+
+[tables of baseline reverse proxy server results at 1,000 req/s over 30 seconds]
+Test # | Avg Latency | Response Counts | Response Rates | Error Rates
+-------|-------------|-----------------|----------------|------------
+1      |   556 ms  | 22,116 / 30,000 |   74%   | 24%
+2      |   1031 ms  | 21,911 / 30,000 |   73%   | 15%
+3      |   1434 ms  | 17,818 / 30,000 |   59%   | 17%
+Total Avg|    389 ms  | 20,615 / 30,000 |  69%   | 19%
+
 [tables of load balancing LC]
+Test # | Avg Latency | Response Counts | Response Rates | Error Rates
+-------|-------------|-----------------|----------------|------------
+1      |   17 ms  | 29,962 / 30,000 |   100%   | 0%
+2      |   53 ms  | 29,991 / 30,000 |   100%   | 0%
+3      |   17 ms  | 30,000 / 30,000 |   100%   | 0%
+Total Avg|    29 ms  | 29,984 / 30,000 |  100%   | 0%
+
 [image of most optimal 1,000 req/sec results]
 [tables of load balancing RR]
+
+Test # | Avg Latency | Response Counts | Response Rates | Error Rates
+-------|-------------|-----------------|----------------|------------
+1      |   17 ms  | 30,000 / 30,000 |   100%   | 0%
+2      |   2,600 ms  | 9,752 / 30,000 |   33%   | 30%
+3      |   52 ms  | 29,818 / 30,000 |   100%   | 0%
+Total Avg|    890 ms  | 23,190 / 30,000 |  77%   | 10%
+
 [images of erratic behavior of RR]
 
 
