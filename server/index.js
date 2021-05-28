@@ -1,9 +1,7 @@
 const app = require("express")();
-const path = require("path");
 const parser = require("body-parser");
 const productsRouter = require("../routes/products.js");
 const logger = require("./logger.js");
-const authorize = require("./authorize.js");
 require("dotenv").config();
 
 const port = process.env.NODE_PORT || 3000;
@@ -13,7 +11,6 @@ app.use([logger]);
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use("/products", productsRouter);
-// app.use(express.static('../public'))
 
 app.get("/", (req, res) => {
   res.status(200).send("Connected to the Jigsaw server!");
